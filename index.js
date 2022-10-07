@@ -26,11 +26,6 @@ app.get('/', (req, res) => {
     res.send('Hi');
 });
 
-app.get('/api/courses', (req, res) => {
-    res.send(courses);
-})
-
-
 // Note that the port in this case is hardcoded. This will only work locally and not in a production environment. Once we deploy this app to
 // a hosting environment, the port will automatically be assigned (so we can't rely on port 3000 to be available.)
 // The way to improve this, is to use an environment variable.
@@ -48,7 +43,10 @@ const courses = [
     { id: 3, name: 'course3' },
 ];
 
-app.use(express.json());
+app.get('/api/courses', (req, res) => {
+    res.send(courses);
+})
+
 
 app.get('/api/courses/:id', (req, res) => {
    let course = courses.find(c => c.id === parseInt(req.params.id))
@@ -57,7 +55,13 @@ app.get('/api/courses/:id', (req, res) => {
 });
 
 
-app.listen(port, () => console.log(`live on port ${port}`))
+
+// This is a piece of middleware. Request body must be parsed in JSON for it to be 'readable'. 
+// By "it", I'm referring to the `req.body.name` in the post method below.
+// This middleware is responsible for that. When we call the `express.json()` method, this method returns a piece of middleware - 
+// Then we call app.use to use that middleware in the request processing pipeline.
+app.use(express.json());
+
 
 
 app.post('/api/courses', (req, res) => {
@@ -66,8 +70,14 @@ app.post('/api/courses', (req, res) => {
         name: req.body.name
     }
     courses.push(course);
+//After adding a course into the object, it is good practice to return that object to the client
+// Chances are, the user needs to know the id of this new object.
     res.send(course);
 });
 
 //assignment: import vs require?
-//2) write notes starting from post method
+
+
+
+
+app.listen(port, () => console.log(`live on port ${port}`))
