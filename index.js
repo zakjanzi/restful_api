@@ -65,6 +65,13 @@ app.use(express.json());
 
 
 app.post('/api/courses', (req, res) => {
+// The best security practice outlines that you should never trust what the client sends you. This is where input validation comes in.
+    if (!req.body.name || req.body.name.length < 3) {
+        //400 Bad Request will be sent if the above conditions are not met.
+        res.status(400).send("Name is required and should be > 3")
+    }
+
+
     const course = {
         id: courses.length + 1,
         name: req.body.name
