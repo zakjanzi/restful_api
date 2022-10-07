@@ -71,6 +71,11 @@ app.post('/api/courses', (req, res) => {
         res.status(400).send("Name is required and should be > 3")
         return;
     }
+// In a real world application, you'll most likely be working with something more complex than the object above ^^
+// Meaning that you'll want to write complex validation logic than the above if statement.
+// For that, we'll use a node pacakge named Joi.
+// Joi allows you to create blueprints or schemas for JavaScript objects to ensure validation of key information.
+
 
     const course = {
         id: courses.length + 1,
