@@ -1,7 +1,7 @@
     require('dotenv').config()
     // As a best practice, put all of your required calls on top.
     // This way, you can easily see what the dependencies for this module.
-    // This index module is dependent on 2 modules: joi and express
+    // This index module is dependent on 3 modules: joi , express and dotenv
 
     //load the express module
     const express = require('express');
@@ -43,7 +43,7 @@
     //Finally we store the result in a const called port and we 'import' dotenv (above).
     const port = process.env.PORT || 3000;
 
-    //an endpoint to get a single course. Will create a const named courses below:
+    //A const named courses that will be used for the endpoint of getting a single course
     const courses = [
         { id: 1, name: 'course1' },
         { id: 2, name: 'course2' },
@@ -92,6 +92,7 @@
         }
     // The above schema tells us that the returned object should be a string with a minimum of 3 characters
         const result = Joi.validate(req.body, schema);
+        
 
         if (result.error) {
             res.status(400).send(result.error.details[0].message)
@@ -134,7 +135,7 @@
 
 
 // Here, we refactored the code in order to use it instead of copying/pasting the validation snippet
-// I did not use it above for the sake of the explanation. I used it in the delete req below.
+// I did not use it above for the sake of the explanation.
     function validateCourse(course) {
         const schema = {
         name: Joi.string().min(3).required()
